@@ -1,0 +1,304 @@
+/* Include Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+p{
+    font-family: 'Poppins', sans-serif;
+}
+
+h1{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #375066;
+}
+
+
+/* Add styles for the big words in the home page */
+.big-word {
+    font-size: 70px; 
+    color: #375066;
+    font-weight: bold; 
+    margin: 20px 0; 
+    font-family: 'Poppins', sans-serif; 
+    opacity: 0; 
+    transition: opacity 1s ease-in-out; 
+    margin-left: 50px;
+}
+
+.big-word.show {
+    opacity: 5; 
+}
+
+
+
+/* css for the two images in the home page */
+.image-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.image-links a {
+    margin: 0 50px;
+    text-decoration: none;
+}
+.chart-img {
+    width: 300px;
+    height: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 8px;
+}
+
+.caption {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    color: #375066;
+
+}
+
+
+/* CSS for the data boxes in visualisations */
+.VisBox {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+    max-width: 1200px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.Box {
+    width: 47%; 
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.Box h2 {
+    font-size: 24px;
+    color: #333; 
+    text-align: center;
+}
+
+.Box p {
+    font-size: 16px;
+    color: #666; 
+    text-align: justify;
+}
+
+
+
+/* CSS for the buttons in visualisations */
+.yearButton {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    gap: 19px; 
+}
+
+.VISButton a {
+    text-decoration: none; 
+}
+
+.VISButton button {
+    padding: 11px 17px; 
+    background-color: #375066; 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 13px; 
+}
+
+
+
+
+/* Css for the header */
+.header {
+    background-color: #386991; 
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    font-family: 'Poppins', sans-serif; 
+}
+
+/* CSss for the header logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Style the logo image */
+.logo-img {
+    width: 60px; 
+    margin-right: 10px;
+}
+
+/* Css for the logo text */
+.logo {
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff; 
+}
+
+/* CSS for the navigation links */
+.header a {
+    text-decoration: none;
+    color: white; 
+    padding: 12px 20px;
+    transition: color 0.3s ease; /*transition*/
+    font-family: 'Poppins', sans-serif; 
+    font-size: 18px;
+    font-weight: bold; 
+    position: relative; 
+}
+
+/* Underline effect */
+.header a::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white; 
+    transition: width 0.5s ease; 
+}
+
+/* css for underline on hover */
+.header a:hover::before {
+    width: 100%; 
+}
+
+
+/* Media query for responsiveness */
+@media screen and (max-width: 500px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .header a {
+        display: block;
+        padding: 10px 0;
+    }
+}
+
+
+/*About us  section css*/
+.about-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+/* Css to style the profile container */
+.profile {
+    width: 305px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    text-align: center;
+}
+
+/* Style the profile image */
+.profile-img {
+    width: 100%; 
+    height: auto; 
+    border-radius: 10px;
+
+}
+
+/* Style the profile name */
+.profile h2 {
+    font-size: 23px;
+    font-family:  'Poppins', sans-serif;
+    margin-bottom: 8px;
+}
+
+/* CSS profile description */
+.profile p {
+    font-size: 16px;
+    color: #666; 
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif
+}
+
+#tooltip {
+    position: absolute;
+    padding: 10px;
+    background: lightgray;
+    border: 1px solid #333;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+}
+
+/*position slider next to graph*/
+#slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 770px;
+}
+
+#year-slider {
+    width: 200px;
+    margin-top: 10px;
+}
+footer {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.VisBox {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+    max-width: 1200px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.Box {
+    width: 47%;  
+    margin-left: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    border-radius: 8px; 
+}
+
+.Box h2 {
+    font-size: 24px;
+    color: #333; 
+    text-align: center;
+}
+
+.Box p {
+    font-size: 16px;
+    color: #666; 
+    text-align: justify;
+}
+
+/*center chart*/
+.chart-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin: 20px auto; 
+    max-width: 900px; 
+}

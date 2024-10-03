@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="stylesDV.css">
+    <title>Home</title>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="oecd.png" alt="OECD Logo" class="logo-img">
+            <a href="HomePage.html" class="logo">OECD</a>
+        </div>
+
+        <div class="header-right">
+          <a class="active" href="HomePage.html">Home</a>
+          <a href="Page1.html">Visualization 1</a>
+          <a href="Page2.html">Visualization 2</a>
+          <a href="About.html">About us</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div id="animated-words">
+            <div class="big-word" style="color: #386991;">OECD</div>
+            <div class="big-word">HEALTH STATISTICS</div>
+            <div class="image-links">
+                <a href="Page1.html">
+                    <img src="bar.png" alt="Bar Chart" class="chart-img">
+                    <div class="caption">Area of Health Expenditure in Australia</div>
+                </a>
+                <a href="Page2.html">
+                    <img src="scatter1.png" alt="Scatter Plot" class="chart-img">
+                    <div class="caption">GDP vs Life Expectancy</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const words = document.querySelectorAll('.big-word');
+            words.forEach((word, index) => {
+                setTimeout(() => {
+                    word.classList.add('show');
+                }, index * 1000); 
+            });
+        };
+    </script>
+</body>
+</html>

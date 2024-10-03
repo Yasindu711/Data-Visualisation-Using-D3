@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="page2.css">
+    <title>Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="page2.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="oecd.png" alt="OECD Logo" class="logo-img">
+            <a href="HomePage.html" class="logo">OECD</a>
+        </div>
+
+        <div class="header-right">
+            <a class="active" href="HomePage.html">Home</a>
+            <a href="Page1.html">Visualization 1</a>
+            <a href="Page2.html">Visualization 2</a>
+            <a href="About.html">About us</a>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <p id="chart">  
+            <div id="tooltip"></div>
+        </p>
+        <div id="slider-container">
+            <input type="range" id="year-slider" min="2020" max="2022" step="1" value="2022" oninput="updateYear(this.value)">
+            <span id="displayYear">2022</span>
+        </div>
+    </div>
+
+    <div class="VisBox">
+        <div class="Box">
+            <h2>Overview of Visualization</h2>
+            <p>
+                The scatterplot aims to represent the relationship between healthcare spending and the average life expectancy across the various OECD countries. Each data point (circle) on the graph represents a country along the x and y axes.
+                The x axis measures the proportion of a country's GDP spent on healthcare expenditures, reflecting the financial investment a country makes in its healthcare systems including all the different types of financing schemes, healthcare functions, and health providers. The y axis represents the average life expectancy of individuals in a country regardless of age or cause of death.
+            </p>
+            <br>
+            <p>
+                Each country has been assigned a colour corresponding to their respective continent.
+            </p>
+            <br>
+            <p>
+                Note: 2022 OECD data was the most recent data available.
+            </p>
+        </div>
+
+        <div class="Box">
+            <h2>Features of Visualization</h2>
+            <p><strong>Hover over (Circles):</strong> Displays information regarding the country, such as: <br> Country name, % GDP spent in that given year, % change of GDP from previous year, life expectancy, change in life expectancy, population, % change in population.
+            </p><br>
+            <p><strong>Slider:</strong> Drag the circle or click in the middle or sides of the slider to change the year of the data being displayed in the graph. (Please ensure that the year is not highlighted as the slider will not work until it is unhighlighted.)
+            </p><br>
+            <p><strong>Hover over (Legend):</strong> Hover over each continent in the legend to see the countries in their respective continents.
+            </p><br>
+            <p><strong>Axes Description:</strong> Y-axis shows Life Expectancy in Years. X-axis shows the Percentage of GDP spent on Healthcare.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

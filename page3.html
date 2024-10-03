@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="stylesDV.css">
+    <title>Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="oecd.png" alt="OECD Logo" class="logo-img">
+            <a href="HomePage.html" class="logo">OECD</a>
+        </div>
+
+        <div class="header-right">
+          <a class="active" href="HomePage.html">Home</a>
+          <a href="Page1.html">Visualization 1</a>
+          <a href="Page2.html">Visualization 2</a>
+          <a href="About.html">About us</a>
+        </div>
+    </div>
+
+    <h1>AREA OF HEALTH EXPENDITURE IN AUSTRALIA 2021-2022</h1>
+
+    <div class="yearButton">
+        <div class="VISButton">
+            <a href="Page1.html">
+                <button id="year2020">2020-2021 Data</button>
+            </a>
+        </div>
+        <div class="VISButton">
+            <a href="page3.html"> 
+                <button id="year2021">2021-2022 Data</button>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div id="chart"></div>
+    <script>
+        // Initial data setup
+        const initialData = [
+            { category: "Total Government Spending", value: 176001 },
+            { category: "Total Non-Government Spending", value: 65315 },
+            { category: "Total Health Expenditure", value: 241316 }
+        ];
+
+        const detailedData = [
+            { area: "Hospitals", government: 78762, nongovernment: 17246 },
+            { area: "Primary health care", government: 55860, nongovernment: 28268 },
+            { area: "Referred medical services", government: 19236, nongovernment: 5835 },
+            { area: "Other services", government: 10165, nongovernment: 6955 },
+            { area: "Research", government: 6814, nongovernment: 450 },
+            { area: "Capital expenditure", government: 5165, nongovernment: 6559 }
+        ];
+
+        // SVG setup
+        const width = 1400, height = 600, margin = { top: 40, right: 300, bottom: 80, left: 100 };
+        const svg = d3.select("#chart").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        let currentData = initialData;
+
+        // Color scale
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        // Function to update the chart
+        function updateChart(data) {
+            // Update scales
+            const xScale = d3.scaleBand()
+                .range([margin.left, width - margin.right])
+                .padding(0.1)
+                .domain(data.map(d => d.category || d.area));
+
+            const yScale = d3.scaleLinear()
+                .range([height - margin.bottom, margin.top])
+                .domain([0, d3.max(data, d => d.value || d.government + d.nongovernment)]);
+
+            // Bind data
+            const bars = svg.selectAll(".bar").data(data, d => d.category || d.area);
+
+            // Enter new bars
+            bars.enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => xScale(d.category || d.area))
+            .attr("y", height - margin.bottom) 
+            .attr("width", xScale.bandwidth())
+            .attr("height", 0) 
+            .attr("fill", (d, i) => color(i))
+            .on("click", handleClick)
+            .merge(bars)
+            .transition().duration(1500)
+            .attr("y", d => yScale(d.value || d.government + d.nongovernment))
+            .attr("height", d => height - margin.bottom - yScale(d.value || d.government + d.nongovernment));
+
+            // Exit and remove old bars
+            bars.exit().remove();
+
+            // Updating the axes
+            const xAxis = d3.axisBottom(xScale);
+            const yAxis = d3.axisLeft(yScale);
+
+            svg.select(".x-axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .transition().duration(800)
+                .call(xAxis);
+
+            svg.select(".y-axis")
+                .attr("transform", `translate(${margin.left},0)`)
+                .transition().duration(500)
+                .call(yAxis);
+
+            // Add labels on bars 
+            const labels = svg.selectAll(".label")
+                .data(data, d => d.category || d.area);
+
+            labels.enter().append("text")
+                .attr("class", "label")
+                .attr("x", d => xScale(d.category || d.area) + xScale.bandwidth() / 2)
+                .attr("y", d => yScale(d.value || d.government + d.nongovernment) - 5)
+                .attr("text-anchor", "middle")
+                .style("opacity", 0) 
+                .text(d => d.value || d.government + d.nongovernment)
+                .merge(labels)
+                .transition().duration(500)
+                .delay(1500)
+                .style("opacity", 1); 
+
+            labels.exit().remove();
+
+            // legend legend
+            const legend = svg.selectAll(".legend")
+                .data(data, d => d.category || d.area);
+
+            const legendEnter = legend.enter().append("g")
+                .attr("class", "legend");
+
+            legendEnter.append("rect")
+                .attr("width", 18)
+                .attr("height", 18)
+                .attr("fill", (d, i) => color(i));
+
+            legendEnter.append("text")
+                .attr("x", 24)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .text(d => d.category || d.area)
+                .style("font-family", "Poppins, sans-serif")
+                .style("font-size", "13px");
+
+            legend.select("text")
+                .text(d => d.category || d.area);
+
+            legend.merge(legendEnter)
+                .attr("transform", (d, i) => `translate(${width - margin.right + 20}, ${margin.top + i * 20})`);
+
+            legend.exit().remove();
+        }
+
+        // Handle click events to update the displayed data
+        function handleClick(event, d) {
+            if (d.category === "Total Government Spending") {
+                updateChart(detailedData.map(item => ({ area: item.area, value: item.government })));
+            } else if (d.category === "Total Non-Government Spending") {
+                updateChart(detailedData.map(item => ({ area: item.area, value: item.nongovernment })));
+            } else {
+                updateChart(initialData);
+            }
+        }
+
+        // positoining x and y axis
+        svg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0,${height - margin.bottom})`);
+        svg.append("g")
+            .attr("class", "y-axis")
+            .attr("transform", `translate(${margin.left},0)`);
+
+        // Add x-axis title
+        svg.append("text")
+            .attr("class", "x-axis-title")
+            .attr("transform", `translate(${(width - margin.right + margin.left) / 2}, ${height - margin.bottom / 2 + 20})`)
+            .text("Areas of Expenditure")
+            .style("font-family", "Poppins, sans-serif")
+            .style("font-size", "20px")
+            .style("text-anchor", "middle");
+
+        // Add y-axis title
+        svg.append("text")
+            .attr("class", "y-axis-title")
+            .attr("transform", "rotate(-90)")
+            .attr("y", margin.left / 4 - 20)
+            .attr("x", -height / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Spending ($Million)")
+            .style("font-family", "Poppins, sans-serif")
+            .style("font-size", "20px");
+
+        updateChart(currentData);
+    </script>
+
+    <div class="VisBox">
+        <div class="Box">
+            <h2>Overview of Visualization</h2>
+            <p>The bar chart you've described offers a comprehensive visualization of health expenditure in Australia for the year 2020-2022 which was avaialble at the time we chose our datasets.
+                The graph is designed to display initial high-level data, which includes Total Government Spending, Total Non-Government Spending, and Total Health Expenditure across all sectors.
+                This initial view gives a macroscopic insight into the overall distribution of health-related financial resources within the country.
+            </p>
+            <br>
+            <p>These areas include Hospitals, Primary Health Care, Referred Medical Services, Other Services, Research, and Capital Expenditure. This detailed view allows stakeholders to understand 
+                the distribution of government versus non-government funds across different healthcare services and sectors, providing a granular look at where funds are being allocated most and least
+            </p>
+            <br>
+            <p>Overall, this visualization is an effective tool for policymakers, healthcare administrators, and the general public to assess the financial focus areas within Australia's health sector,
+                facilitating informed decisions and discussions about health funding priorities and efficiency.
+            </p>
+        </div>
+        <div class="Box">
+            <h2>Features of Visualization</h2>
+            <p><strong>Interactive Drill-In Feature:</strong> Displays initial categories: Total Government Spending, 
+                Total Non-Government Spending, and Total Health Expenditure. Clicking on government or non-government 
+                bars reveals detailed expenditures for areas like Hospitals, Primary Health Care, and more.
+            </p>
+            <br>
+            <p><strong>Axes Description:</strong> Y-axis shows spending in millions of dollars, quantifying financial investments.
+                 X-axis alternates between overall spending categories and specific Areas of Expenditure upon interaction.
+            </p>
+            <br>
+            <p><strong>Dynamic Legend:</strong> Color-coded to differentiate between government and non-government spending. Updates as the user interacts, 
+                reflecting current data categories.
+            </p>
+            <br>
+            <p><strong>Visual Design and Layout:</strong> Uses contrasting colors for clear distinction between spending types. Clean, straightforward
+                 graphics enhance readability and facilitate understanding.
+            </p>
+            <br>
+            <p><strong>Bar Labeling:</strong> The height of each bar is clearly marked above the bar, making it easier for users to read and interpret
+                 the exact values at a glance.
+            </p>
+            <br>
+            <p><strong>Year-Switching Buttons:</strong> TFeatures interactive buttons to switch between years, enabling comparison of health expenditure trends and changes.
+                 This allows for quick analysis of shifts in spending and funding priorities.
+            </p>
+        </div>
+ 
+    </div>
+
+</body>
+</html>
